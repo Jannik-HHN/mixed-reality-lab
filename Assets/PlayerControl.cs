@@ -16,7 +16,10 @@ public class PlayerControl : MonoBehaviour
     public GameObject throwAngle;
 
     private bool isThrowing;
+    public bool grabbedBall;
     private Rigidbody rb_ball;
+
+    public GameObject ikTrigger;
 
     // Start is called before the first frame update
     void Start()
@@ -29,14 +32,37 @@ public class PlayerControl : MonoBehaviour
     void Update()
     {
 
+        //if (Vector3.Distance(transform.position, lookAtObject.transform.position) < 2)
+        //{
+        //IKEnabled = true;
+        //}
+        //else
+        //{
+        //IKEnabled = false;
+        //}
+
+        if((grabWeight > 0 || rotateWeight > 0) && IKEnabled == false)
+        {
+            grabWeight = Mathf.Lerp(grabWeight, 0, 5f * Time.deltaTime);
+            rotateWeight = Mathf.Lerp(rotateWeight, 0, 5f * Time.deltaTime);
+        }
+
+        if ((grabWeight < 1 || rotateWeight < 1) && IKEnabled == true)
+        {
+            grabWeight = Mathf.Lerp(grabWeight, 1, 5f * Time.deltaTime);
+            rotateWeight = Mathf.Lerp(rotateWeight, 1, 5f * Time.deltaTime);
+        }
+
+
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             animator.SetTrigger("Throws");
-            isThrowing = true;
-            rb_ball.isKinematic = true;
+            rb_ball.useGravity = false;
+            IKEnabled = false;
         }
 
-        if (isThrowing)
+        if (grabbedBall)
         {
             lookAtObject.transform.position = handPosition.transform.position;
         }
@@ -44,7 +70,8 @@ public class PlayerControl : MonoBehaviour
 
     private void OnAnimatorIK(int layerIndex)
     {
-        if (IKEnabled)
+        // if (IKEnabled)
+        if (true)
         {
             animator.SetLookAtPosition(lookAtObject.transform.position);
             animator.SetLookAtWeight(lookAtWeight);
@@ -62,10 +89,24 @@ public class PlayerControl : MonoBehaviour
 
     public void ThrowBall()
     {
-        isThrowing = false;
-        rb_ball.isKinematic = false;
-        // rb_ball.AddForce(handPosition.transform.forward * throwForce, ForceMode.Impulse);
-        rb_ball.AddForce(throwAngle.transform.forward * throwForce, ForceMode.Impulse);
+        if(grabbedBall) {
+            grabbedBall = false;
+            rb_ball.useGravity = true;
+            // rb_ball.AddForce(handPosition.transform.forward * throwForce, ForceMode.Impulse);
+            rb_ball.AddForce(throwAngle.transform.forward * throwForce, ForceMode.Impulse);
+        }
 
     }
+
+    public void GrabBall()
+    {
+        rb_ball.useGravity = false;
+        IKEnabled = false;
+        //lookAtObject.transform.position = handPosition.transform.position;
+        //lookAtObject.transform.SetParent(handPosition.transform);
+        //        lookAtObject.transform.position = Vector3.zero;
+    }
 }
+
+
+// SETTING KINEMATIC TRIGGERS TRIGGERS
