@@ -55,11 +55,9 @@ public class PlayerControl : MonoBehaviour
 
 
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && grabbedBall)
         {
             animator.SetTrigger("Throws");
-            rb_ball.useGravity = false;
-            IKEnabled = false;
         }
 
         if (grabbedBall)
@@ -91,6 +89,7 @@ public class PlayerControl : MonoBehaviour
     {
         if(grabbedBall) {
             grabbedBall = false;
+            lookAtWeight = 0.5f;
             rb_ball.useGravity = true;
             // rb_ball.AddForce(handPosition.transform.forward * throwForce, ForceMode.Impulse);
             rb_ball.AddForce(throwAngle.transform.forward * throwForce, ForceMode.Impulse);
@@ -102,6 +101,9 @@ public class PlayerControl : MonoBehaviour
     {
         rb_ball.useGravity = false;
         IKEnabled = false;
+        lookAtWeight = 0.2f;
+        rb_ball.velocity = Vector3.zero;
+        rb_ball.angularVelocity = Vector3.zero;
         //lookAtObject.transform.position = handPosition.transform.position;
         //lookAtObject.transform.SetParent(handPosition.transform);
         //        lookAtObject.transform.position = Vector3.zero;
