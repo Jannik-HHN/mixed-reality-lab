@@ -13,6 +13,8 @@ public class PlayerControl : MonoBehaviour
     public float rotateWeight;
     public float throwForce;
     public GameObject handPosition;
+    // Rotate throwAngle to position of other players hand
+    public GameObject otherHandPosition;
     public GameObject throwAngle;
 
     private bool isThrowing;
