@@ -14,7 +14,8 @@ public class PlayerControl : MonoBehaviour
     public float throwForce;
     public GameObject handPosition;
     // Rotate throwAngle to position of other players hand
-    public GameObject otherHandPosition;
+    public GameObject otherThrowLeft;
+    public GameObject otherThrowRight;
     public GameObject throwAngle;
 
     private bool isThrowing;
@@ -57,8 +58,18 @@ public class PlayerControl : MonoBehaviour
 
 
 
-        if (Input.GetKeyDown(KeyCode.Space) && grabbedBall)
+        if (Input.GetKeyDown(KeyCode.LeftArrow) && grabbedBall)
         {
+            float prevAnlge = throwAngle.transform.rotation.eulerAngles.x;
+            throwAngle.transform.LookAt(otherThrowLeft.transform);
+            throwAngle.transform.rotation = Quaternion.Euler(prevAnlge, throwAngle.transform.rotation.eulerAngles.y, throwAngle.transform.rotation.eulerAngles.z);
+            animator.SetTrigger("Throws");
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow) && grabbedBall)
+        {
+            float prevAnlge = throwAngle.transform.rotation.eulerAngles.x;
+            throwAngle.transform.LookAt(otherThrowRight.transform);
+            throwAngle.transform.rotation = Quaternion.Euler(prevAnlge, throwAngle.transform.rotation.eulerAngles.y, throwAngle.transform.rotation.eulerAngles.z);
             animator.SetTrigger("Throws");
         }
 
