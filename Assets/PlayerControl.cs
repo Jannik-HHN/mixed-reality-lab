@@ -12,6 +12,7 @@ public class PlayerControl : MonoBehaviour
     public float grabWeight;
     public float rotateWeight;
     public float throwForce;
+    public float torqueForce;
     public GameObject handPosition;
     // Rotate throwAngle to position of other players hand
     public GameObject otherThrowLeft;
@@ -106,6 +107,7 @@ public class PlayerControl : MonoBehaviour
             rb_ball.useGravity = true;
             // rb_ball.AddForce(handPosition.transform.forward * throwForce, ForceMode.Impulse);
             rb_ball.AddForce(throwAngle.transform.forward * throwForce, ForceMode.Impulse);
+            rb_ball.AddTorque(new Vector3(1, 1, 1) * torqueForce, ForceMode.Impulse);
         }
 
     }
