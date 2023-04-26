@@ -47,7 +47,7 @@ public class PlayerControl : MonoBehaviour
 
         if((grabWeight > 0 || rotateWeight > 0) && IKEnabled == false)
         {
-            grabWeight = Mathf.Lerp(grabWeight, 0, 5f * Time.deltaTime);
+            grabWeight = Mathf.Lerp(grabWeight, 0, 10f * Time.deltaTime);
             rotateWeight = Mathf.Lerp(rotateWeight, 0, 5f * Time.deltaTime);
         }
 
@@ -76,7 +76,7 @@ public class PlayerControl : MonoBehaviour
 
         if (grabbedBall)
         {
-            lookAtObject.transform.position = handPosition.transform.position;
+            lookAtObject.transform.position = handPosition.transform.position + handPosition.transform.forward * (lookAtObject.transform.localScale.x / 2);
         }
     }
 
@@ -88,8 +88,8 @@ public class PlayerControl : MonoBehaviour
             animator.SetLookAtPosition(lookAtObject.transform.position);
             animator.SetLookAtWeight(lookAtWeight);
 
-            // animator.SetIKPosition(AvatarIKGoal.LeftHand, grabObject.transform.position);
-            // animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, grabWeight);
+            animator.SetIKPosition(AvatarIKGoal.LeftHand, grabObject.transform.position);
+            animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, grabWeight);
 
             animator.SetIKPosition(AvatarIKGoal.RightHand, grabObject.transform.position);
             animator.SetIKPositionWeight(AvatarIKGoal.RightHand, grabWeight);
@@ -102,6 +102,7 @@ public class PlayerControl : MonoBehaviour
     public void ThrowBall()
     {
         if(grabbedBall) {
+            animator.SetBool("HasBall", false);
             grabbedBall = false;
             lookAtWeight = 0.5f;
             rb_ball.useGravity = true;
@@ -119,6 +120,7 @@ public class PlayerControl : MonoBehaviour
         lookAtWeight = 0.2f;
         rb_ball.velocity = Vector3.zero;
         rb_ball.angularVelocity = Vector3.zero;
+        animator.SetBool("HasBall", true);
         //lookAtObject.transform.position = handPosition.transform.position;
         //lookAtObject.transform.SetParent(handPosition.transform);
         //        lookAtObject.transform.position = Vector3.zero;
