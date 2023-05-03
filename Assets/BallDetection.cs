@@ -23,7 +23,7 @@ public class BallDetection : MonoBehaviour
         
         if (other.gameObject.CompareTag("Ball"))
         {
-            player.IKEnabled = true;
+            player.ReachForBall(true);
         }
     }
 
@@ -32,8 +32,7 @@ public class BallDetection : MonoBehaviour
 
         if (other.gameObject.CompareTag("Ball"))
         {
-            player.IKEnabled = false;
-            Debug.Log("Exited");
+            player.ReachForBall(false);
         }
     }
 }

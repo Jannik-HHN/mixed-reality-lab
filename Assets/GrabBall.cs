@@ -23,7 +23,6 @@ public class GrabBall : MonoBehaviour
 
         if (other.gameObject.CompareTag("Ball"))
         {
-            player.grabbedBall = true;
             player.GrabBall();
             Debug.Log("Triggered");
         }

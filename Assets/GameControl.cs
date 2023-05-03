@@ -7,6 +7,8 @@ public class GameControl : MonoBehaviour
     public GameObject ball;
 
     private Rigidbody rb_ball;
+    private bool isPaused = false;
+    private bool isSlowedDown = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +27,33 @@ public class GameControl : MonoBehaviour
             rb_ball.velocity = Vector3.zero;
             rb_ball.angularVelocity = Vector3.zero;
             rb_ball.useGravity = true;
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            if(isPaused)
+            {
+                Time.timeScale = 1;
+            } else
+            {
+                Time.timeScale = 0;
+            }
+            
+            isPaused = !isPaused;
+        }
+
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            if (isSlowedDown)
+            {
+                Time.timeScale = 1;
+            }
+            else
+            {
+                Time.timeScale = 0.1f;
+            }
+
+            isSlowedDown = !isSlowedDown;
         }
     }
 }

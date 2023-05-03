@@ -20,7 +20,7 @@ public class PlayerControl : MonoBehaviour
     public GameObject throwAngle;
 
     private bool isThrowing;
-    public bool grabbedBall;
+    private bool grabbedBall;
     private Rigidbody rb_ball;
 
     public GameObject ikTrigger;
@@ -82,21 +82,17 @@ public class PlayerControl : MonoBehaviour
 
     private void OnAnimatorIK(int layerIndex)
     {
-        // if (IKEnabled)
-        if (true)
-        {
-            animator.SetLookAtPosition(lookAtObject.transform.position);
-            animator.SetLookAtWeight(lookAtWeight);
+        animator.SetLookAtPosition(lookAtObject.transform.position);
+        animator.SetLookAtWeight(lookAtWeight);
 
-            animator.SetIKPosition(AvatarIKGoal.LeftHand, grabObject.transform.position);
-            animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, grabWeight);
+        animator.SetIKPosition(AvatarIKGoal.LeftHand, grabObject.transform.position);
+        animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, grabWeight);
 
-            animator.SetIKPosition(AvatarIKGoal.RightHand, grabObject.transform.position);
-            animator.SetIKPositionWeight(AvatarIKGoal.RightHand, grabWeight);
+        animator.SetIKPosition(AvatarIKGoal.RightHand, grabObject.transform.position);
+        animator.SetIKPositionWeight(AvatarIKGoal.RightHand, grabWeight);
 
-            animator.SetIKRotationWeight(AvatarIKGoal.RightHand, rotateWeight);
-            animator.SetIKRotation(AvatarIKGoal.RightHand, grabObject.transform.rotation);
-        }
+        animator.SetIKRotationWeight(AvatarIKGoal.RightHand, rotateWeight);
+        animator.SetIKRotation(AvatarIKGoal.RightHand, grabObject.transform.rotation);
     }
 
     public void ThrowBall()
@@ -116,14 +112,25 @@ public class PlayerControl : MonoBehaviour
     public void GrabBall()
     {
         rb_ball.useGravity = false;
-        IKEnabled = false;
-        lookAtWeight = 0.2f;
         rb_ball.velocity = Vector3.zero;
         rb_ball.angularVelocity = Vector3.zero;
+        IKEnabled = false;
+        lookAtWeight = 0.2f;
         animator.SetBool("HasBall", true);
+        grabbedBall = true;
         //lookAtObject.transform.position = handPosition.transform.position;
         //lookAtObject.transform.SetParent(handPosition.transform);
         //        lookAtObject.transform.position = Vector3.zero;
+    }
+
+    public void ReachForBall(bool inRange)
+    {
+        IKEnabled = inRange;
+        //if(inRange)
+        //{
+        //    animator.SetTrigger("InRange");
+        //}
+        
     }
 }
 
