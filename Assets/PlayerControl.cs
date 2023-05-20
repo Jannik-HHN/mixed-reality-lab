@@ -18,10 +18,12 @@ public class PlayerControl : MonoBehaviour
     public GameObject otherThrowLeft;
     public GameObject otherThrowRight;
     public GameObject throwAngle;
+    public Transform neck;
 
     private bool isThrowing;
     private bool grabbedBall;
     private Rigidbody rb_ball;
+    private GameObject selectedOther;
 
     public GameObject ikTrigger;
 
@@ -63,6 +65,7 @@ public class PlayerControl : MonoBehaviour
         {
             float prevAnlge = throwAngle.transform.rotation.eulerAngles.x;
             throwAngle.transform.LookAt(otherThrowLeft.transform);
+            selectedOther = otherThrowLeft;
             throwAngle.transform.rotation = Quaternion.Euler(prevAnlge, throwAngle.transform.rotation.eulerAngles.y, throwAngle.transform.rotation.eulerAngles.z);
             animator.SetTrigger("Throws");
         }
@@ -70,6 +73,7 @@ public class PlayerControl : MonoBehaviour
         {
             float prevAnlge = throwAngle.transform.rotation.eulerAngles.x;
             throwAngle.transform.LookAt(otherThrowRight.transform);
+            selectedOther = otherThrowRight;
             throwAngle.transform.rotation = Quaternion.Euler(prevAnlge, throwAngle.transform.rotation.eulerAngles.y, throwAngle.transform.rotation.eulerAngles.z);
             animator.SetTrigger("Throws");
         }
@@ -102,9 +106,10 @@ public class PlayerControl : MonoBehaviour
             grabbedBall = false;
             lookAtWeight = 0.5f;
             rb_ball.useGravity = true;
-            // rb_ball.AddForce(handPosition.transform.forward * throwForce, ForceMode.Impulse);
-            rb_ball.AddForce(throwAngle.transform.forward * throwForce, ForceMode.Impulse);
-            rb_ball.AddTorque(new Vector3(1, 1, 1) * torqueForce, ForceMode.Impulse);
+            lookAtObject.GetComponent<Ball>().Throw(selectedOther.GetComponent<PlayerControl>().neck.transform);
+            //rb_ball.AddForce(handPosition.transform.forward * throwForce, ForceMode.Impulse);
+            //rb_ball.AddForce(throwAngle.transform.forward * throwForce, ForceMode.Impulse);
+            //rb_ball.AddTorque(new Vector3(1, 1, 1) * torqueForce, ForceMode.Impulse);
         }
 
     }
@@ -133,6 +138,5 @@ public class PlayerControl : MonoBehaviour
         
     }
 }
-
 
 // SETTING KINEMATIC TRIGGERS TRIGGERS
